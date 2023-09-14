@@ -88,7 +88,7 @@ export default{
       }
       .faq__answer{
         max-height: 2000px;
-        padding-top: 20px;
+        transition: 1s ease-in;
       }
     }
     &:not(:first-child){
@@ -111,9 +111,25 @@ export default{
     color: var(--dark);
     font-size: 14px;
     font-weight: 400;
-    max-height: 0px;
     overflow: hidden;
-    transition: 1s ease;
+    max-height: 0px;
+    transition: 1s ease-out;
+    &:before{
+      content: "";
+      height: 20px;
+      display: block;
+      width: 100%;
+    }
+  }
+}
+@keyframes hideFaq {
+  100% {
+    max-height: 0px;
+  }
+}
+@keyframes showFaq {
+  100% {
+    max-height: 2000px;
   }
 }
 </style>

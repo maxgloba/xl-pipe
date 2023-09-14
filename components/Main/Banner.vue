@@ -11,14 +11,14 @@
             <img :src="require(`@/assets/${item}`)" alt="" />
           </div>
         </vue-tiny-slider>
-        <div class="banner__nav" id="banner__nav">
-          <button v-for="(item, index) in items"></button>
-        </div>
       </div>
       <div class="banner__info">
         <h1>УСТАНОВКА СИСТЕМ ОТОПЛЕНИЯ</h1>
         <p>Подберем и установим оптимальный вид отопления в Ваш дом.</p>
         <button class="btn">Заказать</button>
+      </div>
+      <div class="banner__nav" id="banner__nav">
+        <button v-for="(item, index) in items"></button>
       </div>
     </div>
   </section>
@@ -175,11 +175,11 @@ export default{
       margin: 0;
       transition: .5s ease;
       opacity: .5;
-      &.tns-nav-active{
-        outline: 1px solid var(--light);
-        outline-offset: 5px;
-        opacity: 1;
-      }
+      // &.tns-nav-active{
+      //   outline: 1px solid var(--light);
+      //   outline-offset: 5px;
+      //   opacity: 1;
+      // }
       &:not(:first-child){
         @media(max-width:767px){
           margin-left: 19px;

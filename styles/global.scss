@@ -134,12 +134,19 @@ textarea{
   // }
 }
 
+.banner{
+  &__nav{
+    .tns-nav-active{
+      outline: 1px solid var(--light) !important;
+      outline-offset: 5px !important;
+      opacity: 1 !important;
+    }
+  }
+}
 
-
-
-
-
-
+button[data-action="start"]{
+  display: none !important;
+}
 
 
 
