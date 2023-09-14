@@ -1,15 +1,15 @@
 <template>
   <section class="regions">
-    <div class="container">
+    <div class="container" @click.prevent="focusOut">
       <h2>РЕГИОН ПРИСУТСТВИЯ</h2>
       <p>В любую точку страны</p>
       <div class="regions__row">
-        <div class="regions__countries" @focusout="focusOut">
-          <span @click.prevent="regionsOpen">
+        <div class="regions__countries">
+          <span @click.prevent.stop="regionsOpen">
             {{ regionSelected }}
             <svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M9.90008 0.618506L9.39911 0.103126C9.33236 0.0343032 9.25546 0 9.16853 0C9.08181 0 9.00494 0.0343032 8.93819 0.103126L5.00005 4.15463L1.06209 0.103235C0.995301 0.0344116 0.918439 0.000108267 0.831611 0.000108267C0.744747 0.000108267 0.667886 0.0344116 0.601132 0.103235L0.100235 0.61865C0.0333416 0.687329 0 0.766407 0 0.855776C0 0.945073 0.0334469 1.02415 0.100235 1.09283L4.76957 5.89695C4.83633 5.96566 4.91322 6 5.00005 6C5.08688 6 5.16364 5.96566 5.23036 5.89695L9.90008 1.09283C9.96683 1.02411 10 0.945037 10 0.855776C10 0.766407 9.96683 0.687329 9.90008 0.618506Z" fill="white"/></svg>
           </span>
-          <div class="regions__countries__list" :class="regionShow ? 'regions__countries__list-open':''" ref="regionList">
+          <div @click.stop="" class="regions__countries__list" :class="regionShow ? 'regions__countries__list-open':''" ref="regionList">
             <input @input="searchRegion" v-model="region" type="text" placeholder="Поиск региона">
             <ul v-if="regionList">
               <li v-for="(region, index) in regionList" :key="`region_${index}`" @click.prevent="selectRegion(region.city)">
