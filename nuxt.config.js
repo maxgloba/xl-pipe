@@ -44,7 +44,7 @@ export default {
   components: true,
   modules: ['@nuxtjs/axios', '@nuxtjs/style-resources'],
   router: {
-    base: '/',
+    base: '/xl-pipe/',
     mode: 'history',
     extendRoutes(routes, resolve) {
       routes.push({
