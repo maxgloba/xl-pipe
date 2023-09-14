@@ -30,12 +30,12 @@ export default{
     winWidth: 1200,
     items: [
       'main-banner.png',
-      'main-banner.png',
-      'main-banner.png',
+      'main-banner1.png',
+      'main-banner2.png',
     ],
     sliderOptions: {
       items: 1,
-      loop: false,
+      loop: true,
       mouseDrag: false,
       autoplay: true,
       speed: 3000,

@@ -153,6 +153,11 @@ export default{
     @media(max-width:767px){
       display: none;
     }
+    @media(min-width:768px){
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     button{
       width: 8px;
       height: 8px;
@@ -162,7 +167,7 @@ export default{
       padding: 0;
       margin: 0;
       &.tns-nav-active{
-        transition: width .5s ease .1s, height .3s ease;
+
         width: 100px;
         height: 2px;
         border-radius: 4px;

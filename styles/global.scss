@@ -29,6 +29,19 @@ body{
   line-height: 1.2;
 }
 
+body::-webkit-scrollbar {
+  width: 8px;               /* ширина всей полосы прокрутки */
+}
+
+body::-webkit-scrollbar-track {
+  background: transparent;        /* цвет зоны отслеживания */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--second);    /* цвет бегунка */
+  border-radius: 10px;       /* округлось бегунка */
+}
+
 a{
   &:hover{
     text-decoration: none;
@@ -62,7 +75,7 @@ textarea{
   opacity: 0;
 }
 
-.promotions, .about, .reviews{
+.promotions, .reviews{
   .tns{
     &-outer{
       position: relative;
@@ -97,10 +110,6 @@ textarea{
   }
 }
 
-.about .tns-nav{
-  margin: -18px 0 0 22%;
-}
-
 .reviews{
   .tns{
     &-nav{
@@ -116,12 +125,13 @@ textarea{
 }
 
 .slider__img{
+  max-width: 985px;
   .tns-ovh {
     overflow: visible;
   }
-  .tns-inner{
-    max-width: 985px;
-  }
+  // .tns-inner{
+  //   max-width: 985px;
+  // }
 }
 
 

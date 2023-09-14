@@ -3,13 +3,27 @@
     <div class="container">
       <div class="regions__row">
         <h2>МЫ НА КАРТЕ</h2>
-        <label for="regions">
-          <select v-model="regionsValue" id="regions" required>
-            <option default disabled value="">ВЫБЕРИТЕ ГОРОД</option>
-            <option v-for="region in regions">{{ region.city }}</option>
-          </select>
-          <span>ВЫБЕРИТЕ ГОРОД</span>
-        </label>
+        <div class="regions__countries" @focusout="focusOut">
+          <span @click.prevent="regionsOpen">
+            {{ regionSelected }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M9.90008 0.618506L9.39911 0.103126C9.33236 0.0343032 9.25546 0 9.16853 0C9.08181 0 9.00494 0.0343032 8.93819 0.103126L5.00005 4.15463L1.06209 0.103235C0.995301 0.0344116 0.918439 0.000108267 0.831611 0.000108267C0.744747 0.000108267 0.667886 0.0344116 0.601132 0.103235L0.100235 0.61865C0.0333416 0.687329 0 0.766407 0 0.855776C0 0.945073 0.0334469 1.02415 0.100235 1.09283L4.76957 5.89695C4.83633 5.96566 4.91322 6 5.00005 6C5.08688 6 5.16364 5.96566 5.23036 5.89695L9.90008 1.09283C9.96683 1.02411 10 0.945037 10 0.855776C10 0.766407 9.96683 0.687329 9.90008 0.618506Z" fill="white"/></svg>
+          </span>
+          <div class="regions__countries__list" :class="regionShow ? 'regions__countries__list-open':''">
+            <input @input="searchRegion" v-model="region" type="text" placeholder="Поиск региона">
+            <ul v-if="regionList">
+              <li v-for="(region, index) in regionList" :key="`region_${index}`" @click.prevent="selectRegion(region.city)">
+                {{ region.city }}
+                <svg v-if="region.diler" xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none"><path d="M4.45781 8.84886C4.54848 8.84886 4.63915 8.81415 4.70857 8.74544L12.8489 0.604398C12.987 0.46627 12.987 0.241724 12.8489 0.103596C12.7108 -0.034532 12.4862 -0.034532 12.3481 0.103596L4.45781 7.99388L0.604398 4.14047C0.46627 4.00234 0.241724 4.00234 0.103596 4.14047C-0.034532 4.2786 -0.034532 4.50314 0.103596 4.64127L4.20706 8.74544C4.27647 8.81415 4.36714 8.84886 4.45781 8.84886Z" fill="#FED71A"/><path d="M16.3953 0.103596L8.25496 8.24464C8.11684 8.38277 8.11684 8.60731 8.25496 8.74544C8.32438 8.81486 8.41505 8.84886 8.50572 8.84886C8.59639 8.84886 8.68706 8.81415 8.75647 8.74544L16.8968 0.604398C17.0349 0.46627 17.0349 0.241724 16.8968 0.103596C16.7587 -0.034532 16.5341 -0.034532 16.3953 0.103596Z" fill="#FED71A"/></svg>
+              </li>
+            </ul>
+            <ul v-else="regions">
+              <li v-for="(region, index) in regions" :key="`region_${index}`" @click.prevent="selectRegion(region.city)">
+                {{ region.city }}
+                <svg v-if="region.diler" xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none"><path d="M4.45781 8.84886C4.54848 8.84886 4.63915 8.81415 4.70857 8.74544L12.8489 0.604398C12.987 0.46627 12.987 0.241724 12.8489 0.103596C12.7108 -0.034532 12.4862 -0.034532 12.3481 0.103596L4.45781 7.99388L0.604398 4.14047C0.46627 4.00234 0.241724 4.00234 0.103596 4.14047C-0.034532 4.2786 -0.034532 4.50314 0.103596 4.64127L4.20706 8.74544C4.27647 8.81415 4.36714 8.84886 4.45781 8.84886Z" fill="#FED71A"/><path d="M16.3953 0.103596L8.25496 8.24464C8.11684 8.38277 8.11684 8.60731 8.25496 8.74544C8.32438 8.81486 8.41505 8.84886 8.50572 8.84886C8.59639 8.84886 8.68706 8.81415 8.75647 8.74544L16.8968 0.604398C17.0349 0.46627 17.0349 0.241724 16.8968 0.103596C16.7587 -0.034532 16.5341 -0.034532 16.3953 0.103596Z" fill="#FED71A"/></svg>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div class="regions__map">
         <div class="regions__info" v-if="regions" :style="`left: ${ regionLeft }px; top: ${ regionTop }px;`">
@@ -17,7 +31,7 @@
             <img src="@/assets/region-icon.png" alt="">
             <span>
               <b>ГОРОД</b>
-              {{ regionsValue }}
+              {{ regionSelected }}
             </span>
             <span>
               <b>АДРЕС</b>
@@ -127,6 +141,10 @@ export default{
       regionAddress: null,
       regionLeft: 0,
       regionTop: 0,
+      region: null,
+      regionList: null,
+      regionSelected: null,
+      regionShow: false,
     }
   },
   computed: {
@@ -135,15 +153,35 @@ export default{
     },
   },
   watch: {
-    regionsValue(newVal, oldVal){
+    regionSelected(newVal, oldVal){
       const region = this.regions.find(region => region.city === newVal)
       this.regionAddress = region.address
       this.regionLeft = region.left
       this.regionTop = region.top
-    }
+    },
+  },
+  methods: {
+    focusOut(){
+      this.regionShow = false
+    },
+    regionsOpen(){
+      this.$store.commit('global/setFocusHeader', null)
+      this.phonesList = false
+      this.regionShow = this.regionShow ? false : true
+      document.querySelector('.nav').classList.remove('active');
+    },
+    searchRegion(){
+      this.regionList = this.regions.filter(o => o.city.includes(this.region))
+    },
+    selectRegion(region){
+      this.regionSelected = region
+      this.regionShow = false
+      this.region = null
+      this.regionList = this.regions
+    },
   },
   mounted(){
-    this.regionsValue = 'Москва'
+    this.regionSelected = 'Москва'
   }
 }
 </script>
@@ -172,7 +210,8 @@ export default{
     font-weight: 400;
   }
   &__row{
-    margin-bottom: res(25, 50);
+    margin-top: 50px;
+    margin-bottom: res(0, 50);
     @media(min-width:768px){
       display: flex;
       justify-content: space-between;
@@ -184,52 +223,8 @@ export default{
       font-weight: 400;
       margin-left: auto;
       text-align: left;
-    }
-    select{
-      color: var(--light);
-      font-size: 16px;
-      font-weight: 700;
-      text-transform: uppercase;
-      border: none;
-      background: none;
-      outline: none !important;
-      @media(max-width:767px){
-        display: block;
-        width: auto;
-        margin-left: auto;
-      }
-      @media(min-width:768px){
-        text-align: center;
-        border-radius: 30px;
-        background: var(--second);
-        width: 288px;
-        height: 54px;
-        padding: 0 20px;
-      }
-      &:valid + span{
+      @media(max-width:7687px){
         display: none;
-      }
-    }
-    label{
-      position: relative;
-      display: block;
-      height: 53px;
-      @media(max-width:767px){
-        text-align: center;
-        display: block;
-      }
-      span{
-        pointer-events: none;
-        text-align: center;
-        width: 100%;
-        position: absolute;
-        left: 0; top: 50%; right: 0;
-        transform: translate(0, -50%);
-        color: var(--light);
-        font-size: 16px;
-        font-weight: 700;
-        text-transform: uppercase;
-        padding: 0 20px;
       }
     }
   }
@@ -250,9 +245,6 @@ export default{
     width: 125px;
     position: absolute;
     transition: .5s ease;
-    @media(max-width:767px){
-      display: none;
-    }
     svg{
       width: 31px;
       height: auto;
@@ -281,6 +273,94 @@ export default{
     }
     b{
       display: block;
+    }
+  }
+  &__countries{
+    position: relative;
+    text-align: center;
+    width: 288px;
+    @media(max-width:767px){
+      margin-left: auto;
+      margin-right: auto;
+    }
+    span{
+      width: 100%;
+      height: 54px;
+      color: var(--light);
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      cursor: pointer;
+      @media(min-width:768px){
+        justify-content: center;
+        border-radius: 30px;
+        background: var(--second);
+      }
+      svg{
+        margin-left: 21px;
+      }
+    }
+    &__list{
+      position: absolute;
+      left: 0;
+      width: 100%;
+      top: 100%;
+      background: var(--light);
+      border-radius: 20px;
+      max-height: 0px;
+      overflow: hidden;
+      transition: .5s ease-in-out;
+      padding-left: res(20, 30);
+      padding-right: res(20, 30);
+      text-align: left;
+      z-index: 10;
+      @media(min-width:768px){
+        top: calc(100% + 10px);
+      }
+      ul{
+        max-height: 140px;
+        overflow-y: auto;
+        padding-top: 20px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+      li{
+        cursor: pointer;
+        color: var(--dark);
+        font-size: 12px;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        &:not(:first-child){
+          margin-top: 10px;
+        }
+        &:hover{
+          color: var(--main);
+        }
+      }
+      &-open{
+        max-height: 226px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+      input{
+        border-radius: 30px;
+        height: res(24, 31);
+        display: block;
+        width: 100%;
+        background: var(--third);
+        border: none;
+        padding: 0 res(10, 15);
+        color: var(--dark);
+        font-size: 12px;
+        font-weight: 400;
+      }
     }
   }
 }

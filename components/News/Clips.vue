@@ -118,6 +118,11 @@ export default{
     }
   }
   &__nav{
+    @media(min-width:768px){
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     button{
       width: 8px;
       height: 8px;
@@ -132,7 +137,7 @@ export default{
           outline-offset: 5px;
         }
         @media(min-width:768px){
-          transition: width .5s ease .1s, height .3s ease;
+
           width: 100px;
           height: 2px;
           border-radius: 4px;

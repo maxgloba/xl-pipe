@@ -73,17 +73,22 @@ export default{
     background: var(--light);
     padding: res(17, 30) res(20, 100);
     position: relative;
+    cursor: pointer;
     *{
       pointer-events: none;
+    }
+    &:hover{
+      svg{
+        transform: rotate(90deg);
+      }
     }
     &.active{
       svg{
         transform: rotate(180deg);
       }
       .faq__answer{
-        transition: .5s ease .5s;
-        margin-top: 20px;
         max-height: 2000px;
+        padding-top: 20px;
       }
     }
     &:not(:first-child){
@@ -108,7 +113,7 @@ export default{
     font-weight: 400;
     max-height: 0px;
     overflow: hidden;
-    transition: .5s ease;
+    transition: 1s ease;
   }
 }
 </style>

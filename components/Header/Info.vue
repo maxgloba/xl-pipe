@@ -5,7 +5,7 @@
         +7 927 315 00 00
         <svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M9.90008 0.618506L9.39911 0.103126C9.33236 0.0343032 9.25546 0 9.16853 0C9.08181 0 9.00494 0.0343032 8.93819 0.103126L5.00005 4.15463L1.06209 0.103235C0.995301 0.0344116 0.918439 0.000108267 0.831611 0.000108267C0.744747 0.000108267 0.667886 0.0344116 0.601132 0.103235L0.100235 0.61865C0.0333416 0.687329 0 0.766407 0 0.855776C0 0.945073 0.0334469 1.02415 0.100235 1.09283L4.76957 5.89695C4.83633 5.96566 4.91322 6 5.00005 6C5.08688 6 5.16364 5.96566 5.23036 5.89695L9.90008 1.09283C9.96683 1.02411 10 0.945037 10 0.855776C10 0.766407 9.96683 0.687329 9.90008 0.618506Z" fill="white"/></svg>
       </span>
-      <div class="info__phones__list" :class="phonesList ? 'info__phones__list-open':''">
+      <div class="info__phones__list" :class="phonesList && focusHeader !== 'hide' ? 'info__phones__list-open':''">
         <a href="tel:+73454575531">
           +7 345 457 55 31
           <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.9235 13.5508L16.8389 13.2958C16.6385 12.7 15.9816 12.0786 15.3782 11.9149L13.1447 11.3047C12.5391 11.1399 11.6751 11.3615 11.2319 11.8047L10.4236 12.6132C7.48601 11.8192 5.18246 9.51518 4.38974 6.5776L5.1981 5.76909C5.64124 5.32587 5.86277 4.46288 5.698 3.8571L5.08897 1.62215C4.9242 1.01747 4.30182 0.36048 3.70729 0.162246L3.45234 0.0765098C2.85668 -0.121724 2.00717 0.0787547 1.56407 0.521939L0.354936 1.7324C0.138925 1.94731 0.000867608 2.562 0.000867608 2.56425C-0.0414225 6.40384 1.46385 10.1031 4.17933 12.8191C6.88814 15.5284 10.5729 17.0318 14.4006 16.9995C14.4206 16.9995 15.053 16.8636 15.269 16.6487L16.4782 15.4393C16.9213 14.9962 17.1217 14.1465 16.9235 13.5508Z" fill="#404040"/></svg>
@@ -25,7 +25,7 @@
         {{ regionSelected }}
         <svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M0.0999193 5.38149L0.600886 5.89687C0.66764 5.9657 0.744536 6 0.83147 6C0.918194 6 0.995055 5.9657 1.06181 5.89687L4.99995 1.84537L8.93791 5.89677C9.0047 5.96559 9.08156 5.99989 9.16839 5.99989C9.25525 5.99989 9.33211 5.96559 9.39887 5.89677L9.89976 5.38135C9.96666 5.31267 10 5.23359 10 5.14422C10 5.05493 9.96655 4.97585 9.89976 4.90717L5.23043 0.103055C5.16367 0.0343399 5.08678 0 4.99995 0C4.91312 0 4.83636 0.0343399 4.76964 0.103055L0.0999193 4.90717C0.0331659 4.97589 0 5.05496 0 5.14422C0 5.23359 0.0331659 5.31267 0.0999193 5.38149Z" fill="#404040"/></svg>
       </span>
-      <div class="info__countries__list" :class="regionShow ? 'info__countries__list-open':''">
+      <div class="info__countries__list" :class="regionShow && focusHeader !== 'hide' ? 'info__countries__list-open':''">
         <input @input="searchRegion" v-model="region" type="text" placeholder="Поиск региона">
         <ul v-if="regionList">
           <li v-for="(region, index) in regionList" :key="`region_${index}`" @click.prevent="selectRegion(region.city)">
@@ -46,17 +46,6 @@
 
 <script>
 export default{
-  props: {
-    focus: Boolean,
-  },
-  watch: {
-    focus: function(newVal, oldVal) {
-      if(!newVal){
-        this.phonesList = false
-        this.regionShow = false
-      }
-    }
-  },
   data(){
     return{
       phonesList: false,
@@ -72,14 +61,19 @@ export default{
       this.regionList = regions
       return regions
     },
+    focusHeader() {
+      return this.$store.getters['global/getFocusHeader']
+    },
   },
   methods: {
     openPhones(){
+      this.$store.commit('global/setFocusHeader', null)
       this.regionShow = false
       this.phonesList = this.phonesList ? false : true
       document.querySelector('.nav').classList.remove('active');
     },
     regionsOpen(){
+      this.$store.commit('global/setFocusHeader', null)
       this.phonesList = false
       this.regionShow = this.regionShow ? false : true
       document.querySelector('.nav').classList.remove('active');
@@ -93,10 +87,6 @@ export default{
       this.region = null
       this.regionList = this.regions
     },
-    // focusOut(){
-    //   this.phonesList = false
-    //   this.regionShow = false
-    // }
   }
 }
 </script>
@@ -230,8 +220,7 @@ export default{
           margin-top: 10px;
         }
         &:hover{
-          background: var(--main);
-          color: var(--light);
+          color: var(--main);
         }
       }
       &-open{

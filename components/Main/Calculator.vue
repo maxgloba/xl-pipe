@@ -57,7 +57,7 @@
               @input="phoneInput"
               maxlength="18"
               minlength="18"
-              placeholder="+7 (XXX) XXX-XX-XX"
+              placeholder="+7 (_ _ _) -_ _ _ - _ _ - _ _"
               required />
           </div>
           <div class="form__field">

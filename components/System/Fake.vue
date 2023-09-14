@@ -128,6 +128,11 @@ export default{
     }
   }
   &__nav{
+    @media(min-width:768px){
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     margin-left: auto;
     margin-right: auto;
     margin-top: 100px;
@@ -144,7 +149,7 @@ export default{
       padding: 0;
       margin: 0;
       &.tns-nav-active{
-        transition: width .5s ease .1s, height .3s ease;
+
         width: 100px;
         height: 2px;
         border-radius: 4px;

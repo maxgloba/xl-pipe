@@ -67,9 +67,7 @@ export default{
   },
   computed: {
     posts() {
-      const posts = this.$store.getters['news/getPosts']
-      this.items = posts
-      return posts
+      return this.$store.getters['news/getPosts']
     },
   },
   methods: {
@@ -94,6 +92,9 @@ export default{
       }, 1000);
     }
   },
+  mounted(){
+    this.items = this.posts
+  }
 }
 </script>
 
